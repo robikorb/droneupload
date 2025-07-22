@@ -11,12 +11,12 @@
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       background-image: url('images/background.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      min-height: 100vh;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -24,86 +24,95 @@
     }
 
     .upload-container {
-      background: rgba(0, 0, 0, 0.65);
-      padding: 2rem 3rem;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 2.5rem;
       border-radius: 16px;
-      box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
       backdrop-filter: blur(6px);
       text-align: center;
-      max-width: 400px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
     }
 
     h2 {
-      margin-bottom: 1rem;
-      font-size: 1.8rem;
-      color: #00ffff;
-      text-shadow: 0 0 5px #00ffff99;
+      margin-bottom: 0.75rem;
+      font-size: 1.75rem;
+      color: #00f0ff;
+      text-shadow: 0 0 8px #00ffff66;
     }
 
     p {
       font-size: 1rem;
-      color: #ccc;
+      color: #ddd;
+      margin-bottom: 1.5rem;
+    }
+
+    .file-input-wrapper {
       margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     input[type="file"] {
-      display: block;
-      margin: 1rem auto;
       color: white;
-      background-color: transparent;
-      border: 2px solid #00ffff;
       padding: 0.5rem;
       border-radius: 8px;
+      border: 1px solid #00ffffaa;
+      background: #00ffff22;
       font-size: 0.9rem;
+      max-width: 90%;
       cursor: pointer;
     }
 
     button {
-      background: linear-gradient(135deg, #00ffff, #0066ff);
+      background: linear-gradient(135deg, #00ffff, #007bff);
       border: none;
-      color: white;
-      padding: 0.8rem 1.6rem;
+      padding: 0.8rem 2rem;
       font-size: 1rem;
       font-weight: bold;
       border-radius: 50px;
-      box-shadow: 0 0 10px #00ffff;
+      color: #fff;
+      box-shadow: 0 0 20px #00ffff66;
       cursor: pointer;
       transition: all 0.3s ease;
     }
 
     button:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 20px #00ffffaa;
+      box-shadow: 0 0 30px #00ffffaa;
     }
 
-    input[type="file"]::-webkit-file-upload-button {
-      visibility: hidden;
-    }
-
-    input[type="file"]::before {
-      content: 'Choose CSV file';
-      display: inline-block;
-      background: #00ffff33;
-      border: 1px solid #00ffffaa;
-      padding: 0.4rem 1rem;
-      border-radius: 8px;
-      color: #fff;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    input[type="file"]:hover::before {
-      background: #00ffff55;
+    code {
+      color: #00ffff;
+      font-weight: bold;
     }
   </style>
+
+  <script>
+    function validateCSV(event) {
+      const fileInput = document.querySelector('input[type="file"]');
+      const file = fileInput.files[0];
+      if (!file || !file.name.toLowerCase().endsWith('.csv')) {
+        alert('❌ Please upload a valid .csv file.');
+        event.preventDefault();
+        return false;
+      }
+      return true;
+    }
+  </script>
 </head>
 <body>
   <div class="upload-container">
     <h2>📤 Upload CSV for Drone Scheduling</h2>
     <p>Please upload your aisle schedule file as a <code>.csv</code>.</p>
-    <form action="https://n8n.korbies.uk/webhook/upload-job-file" method="POST" enctype="multipart/form-data">
-      <input type="file" name="data" accept=".csv" required>
+    <form action="https://n8n.korbies.uk/webhook/upload-job-file"
+          method="POST"
+          enctype="multipart/form-data"
+          onsubmit="return validateCSV(event)">
+      <div class="file-input-wrapper">
+        <input type="file" name="data" accept=".csv" required>
+      </div>
       <button type="submit">Upload</button>
     </form>
   </div>
